@@ -97,7 +97,7 @@ def main():
             cur = conn.cursor()
 
             step += 1
-            cur.execute(fmt("select count(*) as count from {table} where ST_Area({column}) > {area};"))
+            cur.execute(fmt("select count(*) as count from {table} where ST_Area({column}::geography) > {area};"))
             row = cur.fetchall()
             num_to_do = int(row[0][0])
             if not args.quiet:
@@ -108,7 +108,7 @@ def main():
                     print "Finished"
                 break
             
-            sql = fmt("select {id} as id, st_xmin({column}) as xmin, st_ymin({column}) as ymin, st_xmax({column}) as xmax, st_ymax({column}) as ymax from {table} where ST_Area({column}) > {area} order by ST_Area({column}) DESC")
+            sql = fmt("select {id} as id, st_xmin({column}) as xmin, st_ymin({column}) as ymin, st_xmax({column}) as xmax, st_ymax({column}) as ymax from {table} where ST_Area({column}::geography) > {area} order by ST_Area({column}::geography) DESC")
             cur.execute(sql)
             rows = cur.fetchall()
             
