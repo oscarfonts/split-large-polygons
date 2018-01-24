@@ -1,12 +1,10 @@
 split-large-polygons
 ====================
 
+Note: Forked from https://github.com/rory/split-large-polygons, modified to calculate area always in square meters (not in crs units).
+
 A script to break large polygons into many more managable smaller polygons. It will look for large polygons and split them in half until none are larger than the specified area. It can optionally include an overlap to prevent rendering artifacts.
 
-Installation
-============
-
-    pip install split-large-polygons
 
 Usage
 =====
@@ -15,11 +13,11 @@ Example usage:
 
     split-large-polygons -d gis -t land_polygons -c the_geom -i gid -a 0.1
 
-This will split the rows in ``land_polygons`` (in the ``gis`` database) into interately smaller polygons until none of them are larger than 0.1 in area. The unit of area is based on your SRID (the default is unset, but it can be overridden by the ``-s``/``--srid`` option). So this will split things larger than 0.1 square degrees.
+This will split the rows in ``land_polygons`` (in the ``gis`` database) into iteratively smaller polygons until none of them are larger than 0.1 in area (in square meters). The area is calculated casting to a PostGIS `geography` primitive.
 
 The table must have a primary key, which is specified in the ``-i``/``--id`` argument. It will delete the older, larger rows. The values of other columns will be copied to the new, split, polygons.
 
-You need PostGIS 2.0 or later, since this programme needs the [ST_Split](http://postgis.refractions.net/documentation/manual-2.0/ST_Split.html) method.
+You need PostGIS 2.0 or later, since this program needs the [ST_Split](http://postgis.refractions.net/documentation/manual-2.0/ST_Split.html) method.
 
 Buffer
 ------
@@ -46,7 +44,3 @@ Licence
 This code is copyrighted and released under the GNU General Public Licence version 3 (or at your option) a later version. See the LICENCE file for more information.
 
 The author is Rory McCann <rory@technomancy.org>.
-
-
-[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/rory/split-large-polygons/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
-
